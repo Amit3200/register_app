@@ -1,0 +1,150 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+    <link href="{{url_for('static',filename='vendor/nucleo/css/nucleo.css')}}" rel="stylesheet">
+    <link href="{{url_for('static',filename='vendor/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet">
+    <link type="text/css" href="{{url_for('static',filename='css/argon.min.css')}}" rel="stylesheet">
+    <link type="text/css" href="{{url_for('static',filename='css/style.css')}}" rel="stylesheet">
+    <script src="{{url_for('static',filename='vendor/jquery/jquery.min.js')}}"></script>
+    <script src="{{url_for('static',filename='vendor/popper/popper.min.js')}}"></script>
+    <script src="{{url_for('static',filename='vendor/bootstrap/bootstrap.min.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+    <script src="{{url_for('static',filename='js/argon.min.js')}}"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <style>
+    #g-recaptcha-response {
+        display: block !important;
+        position: absolute;
+        margin: -78px 0 0 0 !important;
+        width: 302px !important;
+        height: 76px !important;
+        z-index: -999999;
+        opacity: 0;
+    }
+    .msg-display{
+      font-family: "Poppins";
+      font-size: 0.5rem;
+      margin-top:15px;
+    }
+  </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">ImageKit</a>
+        </div>
+    </nav>
+    <div class="container pt-lg-7">
+        <div class="row justify-content-center">
+          <div class="col-lg-5">
+            <div class="card targetbody1 bg-secondary shadow border-0">
+                <div class="card-body px-lg-5 py-lg-5">
+                    <h6 class="main-text mb3">User Registration</h6>
+                <form action="/accounts/signup" method="POST">
+                    {% if(captcha) %}
+                      <div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" required></div>
+                    {% endif %}
+                    <div class="form-group mb-3">
+                        <div class="input-group input-group-alternative">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="ni ni-single-02"></i></span>
+                          </div>
+                          <input class="form-control" placeholder="Name" type="text" name="username" required>
+                        </div>
+                      </div>
+                      <div class="form-group focused">
+                        <div class="input-group input-group-alternative">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+                          </div>
+                          <input class="form-control" placeholder="Password" type="password" name="password" onkeyup="passwordStrength(this.value)" required>
+                          <strong id="password_strength" class="msg-display"></strong>
+                        </div>
+                      </div>
+                  <div class="form-group mb-3">
+                    <div class="input-group input-group-alternative">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+                      </div>
+                      <input class="form-control" placeholder="Email" type="email" name="email" required>
+                    </div>
+                  </div>
+                  <div class="text-center">
+                    <input type="submit" id="show" class="btn btn-primary my-4" value="Sign up">
+                  </div>
+                </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!-- Core -->
+<script>
+function passwordStrength(val){
+  var password_strength = document.getElementById("password_strength");
+  var password=val
+  if (password.length == 0) {
+      password_strength.innerHTML = "";
+      return;
+    }
+  var regex = new Array();
+  regex.push("[A-Z]"); //Uppercase Alphabet.
+  regex.push("[a-z]"); //Lowercase Alphabet.
+  regex.push("[0-9]"); //Digit.
+  regex.push("[$@$!%*#?&]"); //Special Character.
+  var passed = 0;
+  for (var i = 0; i < regex.length; i++) {
+    if (new RegExp(regex[i]).test(password)) {
+        passed++;
+      }
+    }
+  var color = "";
+  var strength = "";
+  switch (passed) {
+    case 0:
+    case 1:
+    case 2:
+      strength = "Weak";
+      color = "#e74c3c";
+      break;
+    case 3:
+      strength = "Medium";
+      color = "#f39c12";
+      break;
+    case 4:
+      strength = "Strong";
+      color = "#2ecc71";
+      break;
+    }
+    password_strength.innerHTML = strength;
+    password_strength.style.color = color;
+    if(passed <= 2){
+      document.getElementById('show').disabled = true;
+      }
+    else{
+      document.getElementById('show').disabled = false;
+      }
+  }
+window.onload = function() {
+    var $recaptcha = document.querySelector('#g-recaptcha-response');
+    if($recaptcha) {
+        $recaptcha.setAttribute("required", "required");
+    }
+};
+</script>
+    <script src="{{url_for('static',filename='vendor/jquery/jquery.min.js')}}"></script>
+    <script src="{{url_for('static',filename='vendor/popper/popper.min.js')}}"></script>
+    <script src="{{url_for('static',filename='vendor/bootstrap/bootstrap.min.js')}}"></script>
+    <script src="{{url_for('static',filename='vendor/headroom/headroom.min.js')}}"></script>
+    <!-- Argon JS -->
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+</body>
+
+</html>
